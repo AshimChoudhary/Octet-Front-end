@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Octet 3D Viewer - Nebula</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        font-family: 'Nunito', sans-serif;
+        margin: 0;
+        position: relative;
+        min-height: 100vh;
+        overflow-x: hidden;
+
+        background-color: hsl(240, 50%, 8%);
+        background-image: radial-gradient(
+            ellipse 40% 50% at 70% 75%,
+            hsla(50, 100%, 90%, 0.2) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 50% 60% at 30% 40%,
+            hsla(320, 80%, 70%, 0.25) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 45% 55% at 80% 30%,
+            hsla(250, 70%, 60%, 0.2) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 70% 70% at 50% 50%,
+            hsla(260, 50%, 30%, 0.3) 0%,
+            transparent 70%
+          );
+
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.035"/></svg>');
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      #idms {
+        width: 90%;
+        max-width: 800px;
+        height: 60vh;
+        display: block;
+        margin: 0 auto;
+        background-color: transparent;
+      }
+
+      .content-wrapper {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      model-viewer::part(default-progress-bar) {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+      model-viewer::part(default-progress-mask) {
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+    </style>
+  </head>
+
+  <body class="text-slate-100">
+    <div class="content-wrapper">
+      <!-- Top Bar -->
+      <header
+        class="fixed top-0 left-0 right-0 flex items-center justify-between p-6 sm:p-8 z-20"
+      >
+        <h1 class="text-3xl sm:text-[3.5rem] font-bold text-orange-500">
+          Octet
+        </h1>
+        <a
+          href="https://github.com/Jerry-LiL/Octet/releases/tag/Octet"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-slate-300 hover:text-white transition"
+          aria-label="GitHub Repository"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-8 h-8 sm:w-10 sm:h-10 fill-current"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.2-.8.1-.8.1-.8 1.3.1 2 1.4 2 1.4 1.2 2 3.1 1.4 3.9 1.1.1-.9.5-1.4.9-1.7-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.6-1.6.1-3.3 0 0 1-.3 3.3 1.2a11.6 11.6 0 0 1 6 0C17.9 5.5 19 5.8 19 5.8c.7 1.7.2 3 .1 3.3.8.9 1.2 2 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.5.4 1 .7 1.1 1.7v2.5c0 .3.2.7.8.6A10.98 10.98 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z"
+            />
+          </svg>
+        </a>
+      </header>
+
+      <!-- Main Content Area -->
+      <main
+        class="flex-grow flex flex-col items-center justify-center px-4 pt-28 pb-16"
+      >
+        <div class="w-full mb-8">
+          <model-viewer
+            id="idms"
+            src="Octet.glb"
+            autoplay
+            camera-controls
+            disable-zoom
+            auto-rotate
+            shadow-intensity="0.7"
+            environment-image="neutral"
+            exposure="1.2"
+            alt="Octet 3D Model"
+          ></model-viewer>
+        </div>
+
+        <!-- Bootstrap Hero Section -->
+        <div class="container col-xl-10 col-xxl-8 px-4 py-5 mt-12">
+          <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+            <div class="col-10 col-sm-8 col-lg-6">
+              <a
+                href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md"
+              >
+                <img
+                  src="./supported.png"
+                  class="d-block mx-lg-auto img-fluid rounded-lg shadow-lg"
+                  alt="Octet Feature or Bootstrap Themes"
+                  width="700"
+                  height="500"
+                  loading="lazy"
+              /></a>
+            </div>
+            <div class="col-lg-6">
+              <h1 class="display-5 fw-bold text-orange-400 lh-1 mb-3">
+                Interactive Download Experience
+              </h1>
+              <p class="lead text-slate-200">
+                Dive into Video Downloading with our app that supports over 2k+
+                sites without any Disturbance or lagging.
+              </p>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+                <button
+                  type="button"
+                  onclick="downloadModel()"
+                  class="bg-orange-600 hover:bg-orange-700 transition-transform duration-300 hover:scale-105 px-8 py-4 rounded-lg text-white text-lg font-semibold shadow-xl mt-10"
+                >
+                  Download Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- MODIFIED Footer: Transparent background to show body gradient -->
+      <footer class="w-full py-5 mt-auto">
+        <div class="container">
+          <ul
+            class="nav justify-content-center border-bottom border-slate-500 pb-3 mb-3"
+          >
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link px-2 text-slate-100 hover:text-orange-400"
+                >Home</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link px-2 text-slate-100 hover:text-orange-400"
+                >Features</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                href="https://github.com/Jerry-LiL/Octet/releases/tag/Octet"
+                class="nav-link px-2 text-slate-100 hover:text-orange-400"
+                >Release Notes</a
+              >
+            </li>
+          </ul>
+          <p class="text-center text-slate-200">
+            © <span id="copyright-year">2025</span> Octet, Inc
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function downloadModel() {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.download = '#';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+      // Dynamically set copyright year
+      document.getElementById('copyright-year').textContent =
+        new Date().getFullYear();
+    </script>
+  </body>
+</html>
